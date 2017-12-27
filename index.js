@@ -29,7 +29,7 @@ function handleRailStatus(app) {
   
 function wmataIncidentsToTextResponse(incidents) {
     if(incidents.length === 0) {
-        return 'Everything is fine!';
+        return 'No incidents reported';
     } else {
         return incidents.map(incident => incident.Description).join('. ');
     }
