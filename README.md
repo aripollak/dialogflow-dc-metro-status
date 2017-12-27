@@ -1,4 +1,4 @@
--# dialogflow-dc-metro-status
+# dialogflow-dc-metro-status
 
 This is intended to serve as an interface between Dialogflow (and by extension Alexa and Google Assistant) and WMATA, the Washington, DC metro area transit system..
 For this to work properly, you need to enable billing in your Google Cloud account for this project, or else you won't be able to make network requests.
