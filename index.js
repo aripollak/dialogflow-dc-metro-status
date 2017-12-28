@@ -24,7 +24,10 @@ function handleRailStatus(app) {
         then((json) => {
             console.log('WMATA response: ' + JSON.stringify(json));
             app.tell(wmataIncidentsToTextResponse(json.Incidents));
-        }).catch(err => console.error(err));
+        }).catch((err) => {
+            console.error(err);
+            app.tell('There was a problem communicating with WMATA. Please try again later.');
+        });
 }
   
 function wmataIncidentsToTextResponse(incidents) {
