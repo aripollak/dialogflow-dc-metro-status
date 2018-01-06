@@ -6,11 +6,12 @@
   "license": "Apache Version 2.0",
   "author": "Google Inc.",
   "engines": {
-    "node": "~6.0"
+    "node": "~6"
   },
   "scripts": {
     "start": "firebase serve --only functions:dialogflowFirebaseFulfillment",
-    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment"
+    "deploy": "firebase deploy --only functions:dialogflowFirebaseFulfillment",
+    "test": "jest"
   },
   "dependencies": {
     "actions-on-google": "^1.5.x",
@@ -18,5 +19,8 @@
     "firebase-functions": "^0.5.7",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "jest": "^22.0.4"
   }
 }
