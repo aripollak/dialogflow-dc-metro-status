@@ -1,6 +1,8 @@
 # Dialogflow DC Metro Status
 
-This is intended to serve as an interface between Dialogflow (and by extension Google Assistant and others) and WMATA, the Washington, DC metro area transit system. You can try it out on [Google Assistant](https://assistant.google.com/services/a/id/13d16a79cba9362e) or on [the web](https://bot.dialogflow.com/f955895b-484e-4690-a71b-80d7eb8bc1ee).
+[![Build Status](https://travis-ci.org/aripollak/dialogflow-dc-metro-status.svg?branch=master)](https://travis-ci.org/aripollak/dialogflow-dc-metro-status)
+
+This is an interface between Dialogflow (and by extension Google Assistant and others) and WMATA, the Washington, DC metro area transit system. You can try it out on [Google Assistant](https://assistant.google.com/services/a/id/13d16a79cba9362e) or on [the web](https://bot.dialogflow.com/f955895b-484e-4690-a71b-80d7eb8bc1ee).
 
 To run this yourself, you must enable billing in your Google Cloud account for this project, or else you won't be able to make network requests.
 
