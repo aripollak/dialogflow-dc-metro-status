@@ -1,6 +1,6 @@
 'use strict';
 
-const WMATA_API_KEY = 'e13626d03d8e4c03ac07f95541b3091b';
+const WMATA_API_KEY = process.env.WMATA_API_KEY || 'e13626d03d8e4c03ac07f95541b3091b';
 const WMATA_INCIDENTS_URL = 'https://api.wmata.com/Incidents.svc/json/Incidents';
 
 process.env.DEBUG = 'actions-on-google:*';
