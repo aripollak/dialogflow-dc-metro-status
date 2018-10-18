@@ -1,4 +1,4 @@
-console.log = () => {};
+// console.log = () => {};
 
 const mockRequestPromise = jest.fn()
 jest.mock('request-promise', () => {
@@ -9,13 +9,15 @@ const index = require('./index.js')
 
 const railStatusRequest = {
   body: {
-    originalRequest: {
-      data: { user: {} },
+    originalDetectIntentRequest: {
+      payload: { user: {} },
       version: '2',
     },
-    result: {
-      action: 'input.rail_status',
-      contexts: []
+    queryResult: {
+      intent: {
+        displayName: 'Metro rail status',
+      },
+      outputContexts: []
     },
   },
   get: () => { return null; },
