@@ -1,4 +1,4 @@
-// console.log = () => {};
+console.log = () => {};
 
 const mockRequestPromise = jest.fn()
 jest.mock('request-promise', () => {
@@ -10,17 +10,16 @@ const index = require('./index.js')
 const railStatusRequest = {
   body: {
     originalDetectIntentRequest: {
-      payload: { user: {} },
-      version: '2',
+      payload: {},
     },
     queryResult: {
       intent: {
         displayName: 'Metro rail status',
       },
-      outputContexts: []
     },
   },
-  get: () => { return null; },
+  get: () => {},
+  headers: {},
 };
 
 test('input.rail_status responds when getting an error from WMATA', (done) => {
@@ -64,14 +63,25 @@ test('input.rail_status responds when getting non-blank incidents from WMATA', (
 });
 
 function responseExpectingSpeech(expectedSpeech, done) {
-  const handleStatus = {
+  const result = {
     send: (body) => {
-      expect(body).toMatchObject({ speech: expectedSpeech});
+      expect(body).toMatchObject({
+        payload: {
+          google: {
+            richResponse: {
+              items: [{
+                simpleResponse: {
+                  textToSpeech: expectedSpeech }
+                }]
+              }
+          }
+        }
+      });
       done();
-    }
+    },
+    setHeader: () => {},
   };
-  return {
-    append: () => {},
-    status: () => { return handleStatus },
-  }; 
+
+  result.status = () => { return result };
+  return result;
 };

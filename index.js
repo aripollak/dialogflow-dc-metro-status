@@ -12,7 +12,7 @@ app.intent('Metro rail status', handleRailStatus);
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
 
 function handleRailStatus(conv) {
-  return rp({ uri: WMATA_INCIDENTS_URL, headers: { 'api_key': WMATA_API_KEY}, json: true }).
+  return rp({ uri: WMATA_INCIDENTS_URL, headers: { api_key: WMATA_API_KEY }, json: true }).
     then((json) => {
       console.log('WMATA response: ' + JSON.stringify(json));
       conv.close(wmataIncidentsToTextResponse(json.Incidents));
