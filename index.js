@@ -11,15 +11,16 @@ const app = dialogflow({ debug: true });
 app.intent('Metro rail status', handleRailStatus);
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
 
-function handleRailStatus(conv) {
-  return rp({ uri: WMATA_INCIDENTS_URL, headers: { api_key: WMATA_API_KEY }, json: true }).
-    then((json) => {
-      console.log('WMATA response: ' + JSON.stringify(json));
-      conv.close(wmataIncidentsToTextResponse(json.Incidents));
-    }, (err) => {
-      console.error(err);
-      conv.close('There was a problem communicating with WMATA. Please try again later.');
-    });
+async function handleRailStatus(conv) {
+  try {
+    const json = await
+      rp({ uri: WMATA_INCIDENTS_URL, headers: { api_key: WMATA_API_KEY }, json: true });
+    console.log('WMATA response: ' + JSON.stringify(json));
+    conv.close(wmataIncidentsToTextResponse(json.Incidents));
+  } catch(err) {
+    console.error(err);
+    conv.close('There was a problem communicating with WMATA. Please try again later.');
+  }
 }
 
 function wmataIncidentsToTextResponse(incidents) {
