@@ -7,32 +7,17 @@ jest.mock('request-promise', () => {
 
 const index = require('./index.js')
 
-const railStatusRequest = {
-  body: {
-    originalDetectIntentRequest: {
-      payload: {},
-    },
-    queryResult: {
-      intent: {
-        displayName: 'Metro rail status',
-      },
-    },
-  },
-  get: () => {},
-  headers: {},
-};
-
 test('input.rail_status responds when getting an error from WMATA', (done) => {
   const expectedSpeech = 'There was a problem communicating with WMATA. Please try again later.'
-  const response = responseExpectingSpeech(expectedSpeech, done)
   mockRequestPromise.mockImplementation(() => Promise.reject(new Error('WMATA error')));
   jest.spyOn(console, 'error').mockImplementation();
+  const response = responseExpectingSpeech(expectedSpeech, done)
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
 
 test('input.rail_status responds when getting blank incidents from WMATA', (done) => {
-  const response = responseExpectingSpeech('Everything is fine!', done)
   mockRequestPromise.mockImplementation(() => Promise.resolve({ Incidents: [] }));
+  const response = responseExpectingSpeech('Everything is fine!', done)
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
 
@@ -55,28 +40,33 @@ test('input.rail_status responds when getting non-blank incidents from WMATA', (
       },
     ]
   };
+  mockRequestPromise.mockImplementation(() => Promise.resolve(wmataIncidentsResponse));
+
   const expectedSpeech = 'Yellow and Green Lines: Things are happening.' +
     ' Red Line: Things may be happening';
   const response = responseExpectingSpeech(expectedSpeech, done)
-  mockRequestPromise.mockImplementation(() => Promise.resolve(wmataIncidentsResponse));
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
+
+const railStatusRequest = {
+  body: {
+    originalDetectIntentRequest: {
+      payload: {},
+    },
+    queryResult: {
+      intent: {
+        displayName: 'Metro rail status',
+      },
+    },
+  },
+  get: () => {},
+  headers: {},
+}
 
 function responseExpectingSpeech(expectedSpeech, done) {
   const result = {
     send: (body) => {
-      expect(body).toMatchObject({
-        payload: {
-          google: {
-            richResponse: {
-              items: [{
-                simpleResponse: {
-                  textToSpeech: expectedSpeech }
-                }]
-              }
-          }
-        }
-      });
+      expect(body).toMatchObject(expectedResponseBody(expectedSpeech));
       done();
     },
     setHeader: () => {},
@@ -84,4 +74,19 @@ function responseExpectingSpeech(expectedSpeech, done) {
 
   result.status = () => { return result };
   return result;
-};
+}
+
+function expectedResponseBody(speech) {
+  return {
+    payload: {
+      google: {
+        richResponse: {
+          items: [{
+            simpleResponse: {
+              textToSpeech: speech}
+          }]
+        }
+      }
+    }
+  };
+}
