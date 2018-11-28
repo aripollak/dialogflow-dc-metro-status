@@ -9,14 +9,14 @@ const index = require('./index.js')
 
 test('Metro rail status responds when getting an error from WMATA', (done) => {
   const expectedSpeech = 'There was a problem communicating with WMATA. Please try again later.'
-  mockRequestPromise.mockImplementation(() => Promise.reject(new Error('WMATA error')));
+  mockRequestPromise.mockRejectedValue(new Error('WMATA error'))
   jest.spyOn(console, 'error').mockImplementation();
   const response = responseExpectingSpeech(expectedSpeech, done)
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
 
 test('Metro rail status responds when getting blank incidents from WMATA', (done) => {
-  mockRequestPromise.mockImplementation(() => Promise.resolve({ Incidents: [] }));
+  mockRequestPromise.mockResolvedValue({ Incidents: [] });
   const response = responseExpectingSpeech('Everything is fine!', done)
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
@@ -40,7 +40,7 @@ test('Metro rail status responds when getting non-blank incidents from WMATA', (
       },
     ]
   };
-  mockRequestPromise.mockImplementation(() => Promise.resolve(wmataIncidentsResponse));
+  mockRequestPromise.mockResolvedValue(wmataIncidentsResponse);
 
   const expectedSpeech = 'Yellow and Green Lines: Things are happening.' +
     ' Red Line: Things may be happening';
