@@ -13,20 +13,30 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
 
 async function handleRailStatus(conv) {
   try {
-    const json = await
-      rp({ uri: WMATA_INCIDENTS_URL, headers: { api_key: WMATA_API_KEY }, json: true });
-    console.log('WMATA response: ' + JSON.stringify(json));
-    conv.close(wmataIncidentsToTextResponse(json.Incidents));
+    const json = await getWmataUrl(WMATA_INCIDENTS_URL, conv)
+    conv.close(wmataIncidentsToTextResponse(json.Incidents))
   } catch(err) {
-    console.error(err);
-    conv.close('There was a problem communicating with WMATA. Please try again later.');
+    logAndRespondWithError(err, conv);
   }
+}
+
+async function getWmataUrl(url, conv) {
+  const json = await
+    rp({ uri: WMATA_INCIDENTS_URL, headers: { api_key: WMATA_API_KEY }, json: true });
+  console.log('WMATA response: ' + JSON.stringify(json));
+  return json;
+}
+
+function logAndRespondWithError(err, conv) {
+  console.error(err);
+  conv.close('There was a problem communicating with WMATA. Please try again later.');
 }
 
 function wmataIncidentsToTextResponse(incidents) {
   if(incidents.length === 0) {
     return 'Everything is fine!';
   } else {
-    return incidents.map(incident => incident.Description).join('. ');
+    return incidents.map(incident => incident.Description).join(".\n").
+      replace(/btwn/g, 'between').replace(/svc/g, 'service');
   }
 }

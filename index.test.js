@@ -26,7 +26,7 @@ test('Metro rail status responds when getting non-blank incidents from WMATA', (
     Incidents: [
       {
         DateUpdated: "2018-01-06T07:35:57",
-        Description: "Yellow and Green Lines: Things are happening",
+        Description: "Yellow and Green Lines: Things are happening btwn svc",
         IncidentID: '6884D379-5075-493E-92E9-646EA90B10A6',
         IncidentType: "Alert",
         LinesAffected: "YL; GL;",
@@ -42,8 +42,8 @@ test('Metro rail status responds when getting non-blank incidents from WMATA', (
   };
   mockRequestPromise.mockResolvedValue(wmataIncidentsResponse);
 
-  const expectedSpeech = 'Yellow and Green Lines: Things are happening.' +
-    ' Red Line: Things may be happening';
+  const expectedSpeech = 'Yellow and Green Lines: Things are happening between service.' +
+    "\nRed Line: Things may be happening";
   const response = responseExpectingSpeech(expectedSpeech, done)
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
