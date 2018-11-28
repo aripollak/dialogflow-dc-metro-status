@@ -7,7 +7,7 @@ jest.mock('request-promise', () => {
 
 const index = require('./index.js')
 
-test('input.rail_status responds when getting an error from WMATA', (done) => {
+test('Metro rail status responds when getting an error from WMATA', (done) => {
   const expectedSpeech = 'There was a problem communicating with WMATA. Please try again later.'
   mockRequestPromise.mockImplementation(() => Promise.reject(new Error('WMATA error')));
   jest.spyOn(console, 'error').mockImplementation();
@@ -15,13 +15,13 @@ test('input.rail_status responds when getting an error from WMATA', (done) => {
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
 
-test('input.rail_status responds when getting blank incidents from WMATA', (done) => {
+test('Metro rail status responds when getting blank incidents from WMATA', (done) => {
   mockRequestPromise.mockImplementation(() => Promise.resolve({ Incidents: [] }));
   const response = responseExpectingSpeech('Everything is fine!', done)
   index.dialogflowFirebaseFulfillment(railStatusRequest, response);
 });
 
-test('input.rail_status responds when getting non-blank incidents from WMATA', (done) => {
+test('Metro rail status responds when getting non-blank incidents from WMATA', (done) => {
   const wmataIncidentsResponse = {
     Incidents: [
       {
