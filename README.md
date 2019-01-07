@@ -10,7 +10,7 @@ To run this yourself, you must enable billing in your Google Cloud account for t
 
 * Create a new project on [Dialogflow](https://www.dialogflow.com)
 * Go to the Fulfillment page, and replace the conents of `index.js` and `package.json` with the files from this repository.
-* Go to the Intents page and add a new intent with an action of `input.rail_status`, and check "Use webhook" under Fulfillment.
+* Go to the Intents page and add a new intent named "Metro rail status", and check "Use webhook" under Fulfillment.
 
 ## Developing & testing locally
 
