@@ -1,7 +1,7 @@
 console.log = () => {};
 
 const mockRequestPromise = jest.fn()
-jest.mock('request-promise', () => {
+jest.mock('request-promise-native', () => {
   return mockRequestPromise;
 });
 

@@ -5,7 +5,7 @@ const WMATA_INCIDENTS_URL = 'https://api.wmata.com/Incidents.svc/json/Incidents'
 
 const { dialogflow } = require('actions-on-google');
 const functions = require('firebase-functions');
-const rp = require('request-promise');
+const rp = require('request-promise-native');
 
 const app = dialogflow({ debug: true });
 app.intent('Metro rail status', handleRailStatus);
